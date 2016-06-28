@@ -1,0 +1,98 @@
+<HTML>
+<Head><title>ajax test</title>
+<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/wikk_params.js"></script>
+<script src="/js/wikk_ajax-min.js"></script>
+<script>
+
+function addTextNode(the_span, the_text) {
+  var text_node = document.createTextNode(the_text);
+  var span_node = document.getElementById(the_span);
+  span_node.appendChild(text_node);
+}
+
+function dump_args(div_id, args) {
+  var the_div = document.getElementById((div_id == 'post' ? 'newer' : div_id ) + "_div");
+  the_div.style.display = 'block';
+  
+  addTextNode("stringify", JSON.stringify(args) );
+  addTextNode("traditional", $.param(args,true) );
+  addTextNode("newer", $.param(args,false) );
+}
+
+function test_callback(data) {
+  //alert(data);
+  document.getElementById("xya").innerHTML = "callback " + new Date() + "<p>" + data;
+}
+
+function test_completion(data) {
+  document.getElementById("xyb").innerHTML = "completion " + new Date();
+}
+
+function test_error(jqXHR, textStatus, errorMessage) {
+  var error_div = document.getElementById('error_div');
+  error_div.style.display = 'block';
+  addTextNode("error_jqXHR", jqXHR != null ? JSON.stringify(jqXHR) : '') ;
+  addTextNode("error_textStatus", textStatus );
+  addTextNode("error_message", JSON.stringify(errorMessage) );
+}
+
+function init() {
+  var args = { 
+    "method": "update",
+    "params": {
+      "key": { "dns_subnet_id": 7 },
+      "fields": { "state": "active" , "line": "5"},
+      "response": ["customerid","name","site_name"]
+    }
+  }
+  url  = "/ruby/test.rbx"
+  wikk_params.getURLParameters();
+  dump_args(wikk_params.ARGV['method'], args);
+  if(wikk_params.ARGV['method'] == 'post') {
+    wikk_ajax.ajax_post_call(url, args, test_callback, test_error, test_completion)
+  } else if(wikk_params.ARGV['method'] == 'stringify') {
+    wikk_ajax.ajax_post_call(url, args, test_callback, test_error, test_completion, 'html', true)
+  } else if(wikk_params.ARGV['method'] == 'traditional') {
+    wikk_ajax.ajax_get_call(url, args, test_callback, test_error, test_completion, 'html', true)
+  } else if(wikk_params.ARGV['method'] == 'newer') {
+    wikk_ajax.ajax_get_call(url, args, test_callback, test_error, test_completion)
+  }
+}
+
+</script>
+
+</head>
+<body onload="init();">
+<h2>Dumped Test Arg Object</h2>
+<div id="stringify_div" style="display:none">
+  <h3>Stringify</h3>
+    <div id="stringify"></div>
+</div>
+<div id="traditional_div" style="display:none">
+  <h3>Traditional</h3>
+    <div id="traditional"></div>
+</div>
+<div id="newer_div" style="display:none">
+  <h3>Newer</h3>
+    <div id="newer"></div>
+</div>
+
+<div id="error_div" style="display:none">
+<h2>Error</h2>
+  <h3>jqXHR</h3>
+    <div id="error_jqXHR"></div><br>
+  <h3>textStatus</h3>
+    <div id="error_textStatus"></div><br>
+  <h3>Message</h3>
+    <div id="error_message"></div><br>
+</div>
+  
+<h2>Callback data</h2>
+  <div id="xya"></div>
+  
+<h2>Completion data</h2>
+  <div id="xyb"></div>
+
+</body>
+</head>

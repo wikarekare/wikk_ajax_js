@@ -65,7 +65,7 @@ var wikk_ajax = ( function() {
     var newDataRequest = $.ajax( url, {
          type: 'POST',
          data: serial_args,
-         contentType: content_type, 
+         contentType: content_type,
          dataType: response_type, // type of response data
          cache: false,
          timeout: 3600000, // timeout after 5 minutes

@@ -1,0 +1,63 @@
+<html>
+<head><title>ajax test</title>
+<script src="/js/RGraph/jquery.min.js"></script>
+<script src="ajax.js"></script>
+<script>
+
+function dump_args(args) {
+  document.getElementById("xyc").innerHTML = JSON.stringify(args) + "<br>" + $.param(args,true) + "<br>" + $.param(args);
+}
+
+function test_callback(data) {
+  //alert(data);
+  document.getElementById("xya").innerHTML = "callback " + new Date() + "<p>" + data;
+}
+
+function test_completion(data) {
+  //alert(data);
+  document.getElementById("xyb").innerHTML = "completion " + new Date();
+}
+
+function test_args() {
+  for(var a in ARGV) alert(a + " => " + ARGV[a]);
+}
+
+function callback(data) {}
+function completion_callback() { }
+function error_callback() {}
+
+function init() {
+  var args = {
+    "method": "update",
+    "params": {
+      "key": { "dns_subnet_id": 7 },
+      "fields": { "state": "active" , "line": "5"},
+      "response": ["customerid","name","site_name"]
+    }
+  }
+  url  = "http://admin2.wikarekare.org/test";
+  getURLParameters();
+  dump_args(args);
+  //test_args();
+  if(ARGV['method'] == 1) {
+    ajax_post_call("http://admin2.wikarekare.org/ruby/test.rbx", args, test_callback, ajax_error, test_completion)
+  } else if(ARGV['method'] == 2) {
+    ajax_json_post_call("http://admin2.wikarekare.org/ruby/test.rbx", args, test_callback, ajax_error, test_completion)
+  } else if(ARGV['method'] == 3) {
+    ajax_get_call("http://admin2.wikarekare.org/ruby/test.rbx", args, test_callback, ajax_error, test_completion)
+  }
+}
+
+</script>
+
+</head>
+<body onload="init();">
+<h2>Dumped Args</h2>
+  <div id="xyc"></div>
+
+<h2>Response</h2>
+  <div id="xya"></div>
+<hr>
+  <div id="xyb"></div>
+</body>
+</head>

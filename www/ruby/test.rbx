@@ -1,6 +1,8 @@
 #!/usr/local/bin/ruby
 require 'cgi'
-require '/services/www/rlib/authlib.rb'
+RLIB = '/wikk/rlib'
+
+require "#{RLIB}/authlib.rb" # Doesn't exit !!!!
 
 def params(cgi)
   '<h2>Params</h2>' +

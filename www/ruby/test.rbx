@@ -1,6 +1,6 @@
 #!/usr/local/bin/ruby
 require 'cgi'
-RLIB = '/wikk/rlib'
+RLIB = '/wikk/rlib' unless defined? RLIB
 
 require "#{RLIB}/authlib.rb" # Doesn't exit !!!!
 

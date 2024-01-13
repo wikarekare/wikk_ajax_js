@@ -1,6 +1,6 @@
 <HTML>
 <Head><title>ajax test</title>
-<script src="/js/jquery-3.0.0.min.js"></script>
+<script src="/js/jquery-3.7.1.min.js"></script>
 <script src="/js/wikk_params.js"></script>
 <script src="/js/wikk_ajax-min.js"></script>
 <script>
@@ -14,7 +14,7 @@ function addTextNode(the_span, the_text) {
 function dump_args(div_id, args) {
   var the_div = document.getElementById((div_id == 'post' ? 'newer' : div_id ) + "_div");
   the_div.style.display = 'block';
-  
+
   addTextNode("stringify", JSON.stringify(args) );
   addTextNode("traditional", $.param(args,true) );
   addTextNode("newer", $.param(args,false) );
@@ -38,7 +38,7 @@ function test_error(jqXHR, textStatus, errorMessage) {
 }
 
 function init() {
-  var args = { 
+  var args = {
     "method": "update",
     "params": {
       "key": { "dns_subnet_id": 7 },
@@ -87,10 +87,10 @@ function init() {
   <h3>Message</h3>
     <div id="error_message"></div><br>
 </div>
-  
+
 <h2>Callback data</h2>
   <div id="xya"></div>
-  
+
 <h2>Completion data</h2>
   <div id="xyb"></div>
 

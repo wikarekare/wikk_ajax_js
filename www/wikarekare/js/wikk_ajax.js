@@ -1,3 +1,4 @@
+const RPC_URL = "/rpc"
 var wikk_ajax = ( function() {
 
   var VERSION = "1.0.1";

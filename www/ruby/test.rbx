@@ -1,8 +1,10 @@
 #!/usr/local/bin/ruby
 require 'cgi'
-RLIB = '/wikk/rlib' unless defined? RLIB
 
-require "#{RLIB}/authlib.rb" # Doesn't exit !!!!
+unless defined? WIKK_CONF
+  load '/wikk/etc/wikk.conf'
+end
+require "#{RLIB}/authlib.rb" # Doesn't exit yet!!!!
 
 def params(cgi)
   '<h2>Params</h2>' +

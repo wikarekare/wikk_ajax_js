@@ -1,8 +1,8 @@
 #!/usr/local/bin/ruby
 require 'cgi'
+require 'wikk_web_auth'
 
 load '/wikk/etc/wikk.conf' unless defined? WIKK_CONF
-require "#{RLIB}/authlib.rb" # Doesn't exit yet!!!!
 
 def params(cgi)
   '<h2>Params</h2>' +
@@ -38,8 +38,11 @@ def environment(_cgi)
 end
 
 def authenticated(cgi)
+  password_conf = WIKK::Configuration.new(WIKK_PASSWORD_CONF)
+  pstore_conf = JSON.parse(File.read(PSTORE_CONF))
+  auth = WIKK::Web_Auth.new(cgi, password_conf, return_url, pstore_config: pstore_conf, run_auth: true)
   '<h1>Authenticated</h2><ul>' +
-    (Authenticated.authenticated?(cgi) ? 'True' : 'False') +
+    ( auth.authenticated? ? 'True' : 'False') +
     '</ul'
 end
 

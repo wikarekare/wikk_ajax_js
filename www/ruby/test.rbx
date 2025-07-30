@@ -1,5 +1,6 @@
 #!/usr/local/bin/ruby
 require 'cgi'
+require 'wikk_configuration'
 require 'wikk_web_auth'
 
 load '/wikk/etc/wikk.conf' unless defined? WIKK_CONF
@@ -40,7 +41,7 @@ end
 def authenticated(cgi)
   password_conf = WIKK::Configuration.new(WIKK_PASSWORD_CONF)
   pstore_conf = JSON.parse(File.read(PSTORE_CONF))
-  auth = WIKK::Web_Auth.new(cgi, password_conf, return_url, pstore_config: pstore_conf, run_auth: true)
+  auth = WIKK::Web_Auth.new(cgi, password_conf, '/ruby/test.rbx', pstore_config: pstore_conf, run_auth: true)
   '<h1>Authenticated</h2><ul>' +
     ( auth.authenticated? ? 'True' : 'False') +
     '</ul'
